@@ -1,22 +1,26 @@
-require('dotenv').config(); // Charge le fichier .env
+require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./db');
+const authRoutes = require('./routes/authRoutes');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Connexion à la base de données
 connectDB();
 
-// Une route simple pour vérifier si tout fonctionne
+// Middlewares
+app.use(cors()); // Pour autoriser les requêtes du frontend
+app.use(express.json()); // Pour lire le JSON envoyé dans les requêtes
+
+// Routes
+app.use('/auth', authRoutes);
+
 app.get('/', (req, res) => {
-  res.json({
-    message: "Bienvenue sur ton backend Node.js avec .env ! 🔐",
-    status: "success",
-    version: "1.4.0"
-  });
+  res.json({ message: "Backend MVC opérationnel ! 🚀" });
 });
 
-// Lancement du serveur en utilisant la variable PORT
 app.listen(port, () => {
-  console.log(`🚀 Le serveur tourne sur http://localhost:${port}`);
+  console.log(`🚀 Serveur MVC sur http://localhost:${port}`);
 });
